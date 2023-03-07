@@ -29,34 +29,35 @@ def calculate_bmi(height, weight):
         return result
 
 
-def height_inches(height):
-    """
-    Calculate height in feet and inches to inches
-    :param
-    height: input height(feet'inches)
-    :return:
-    total_inches: height(inches)
-    """
-    if "'" in height:
-        feet, inches = height.split("'")
-        total_inches = int(feet) * 12 + int(inches.strip('"'))
-    # If only feet input
-    else:
-        total_inches = int(height) * 12
-    return total_inches
-
-
 def on_click():
     # Set height and get inches
     height = height_entry.get()
-    inches = height_inches(height)
+    inches = inches_entry.get()
 
-    # Set weight and integer
-    weight = weight_entry.get()
-    weight_int = int(weight)
+    # Set int
+    height_int = int(height)
+    inches_int = int(inches)
 
-    print("Your height: ", height, " and weight: ", weight)  # Show input height and weight
-    print(calculate_bmi(inches, weight_int))  # Print the bmi category
+    if inches_int > 12 or inches_int < 0:
+        error_output = tk.Label(window, text="Enter a valid input!")
+        error_output.grid(row=4, column=0)
+
+    else:
+        # Get total inches
+        total_inches = (height_int*12)+inches_int
+
+        # Set weight and integer
+        weight = weight_entry.get()
+        weight_int = int(weight)
+
+        print("Your height: ", height, "'", inches, " and weight: ", weight)  # Show input height and weight
+        print(calculate_bmi(total_inches, weight_int))  # Print the bmi category
+
+        info_output = tk.Label(window, text=f"Your height: {height}'{inches} and weight {weight}")
+        info_output.grid(row=4, column=0, columnspan=2)
+
+        bmi_output = tk.Label(window, text=f"{calculate_bmi(total_inches, weight_int)}")
+        bmi_output.grid(row=5, column=0, columnspan=2, sticky="nsew")
 
 
 if __name__ == '__main__':
@@ -66,24 +67,32 @@ if __name__ == '__main__':
     window.title("Calculate BMI!")
 
     # Ask for height
-    height_label = tk.Label(window, text="Enter your Height(Feet and Inches): ")
-    height_label.pack()
+    height_label = tk.Label(window, text="Feet: ")
+    height_label.grid(row=0, column=0)
 
     # Set height entry
     height_entry = tk.Entry(window)
-    height_entry.pack()
+    height_entry.grid(row=0, column=1)
+
+    # Ask for inches
+    inches_label = tk.Label(window, text="Inches: ")
+    inches_label.grid(row=1, column=0)
+
+    # Set inches entry
+    inches_entry = tk.Entry(window)
+    inches_entry.grid(row=1, column=1)
 
     # Ask for weight
     weight_label = tk.Label(window, text="Enter your Weight(in Pounds): ")
-    weight_label.pack()
+    weight_label.grid(row=2, column=0)
 
     # Set weight
     weight_entry = tk.Entry(window)
-    weight_entry.pack()
+    weight_entry.grid(row=2, column=1)
 
     # Set button
     button = tk.Button(window, text="Calculate BMI!", command=on_click)
-    button.pack()
+    button.grid(row=3, column=0, columnspan=2, sticky="nsew")
 
     window.mainloop()
 
