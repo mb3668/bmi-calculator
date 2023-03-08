@@ -13,20 +13,20 @@ def calculate_bmi(height, weight):
     :return:
     User bmi category
     """
-    bmi = (weight / (height*height) * 703)
+    bmi = (weight / (height*0.025)**2)
     print(bmi)
     if 18.5 <= bmi < 25:
         result = "Normal"
-        return result
+        return result, bmi
     elif 25 <= bmi < 30:
         result = "Overweight"
-        return result
+        return result, bmi
     elif bmi >= 30:
         result = "Obese"
-        return result
+        return result, bmi
     else:
         result = "Underweight"
-        return result
+        return result, bmi
 
 
 def on_click():
@@ -38,9 +38,19 @@ def on_click():
     height_int = int(height)
     inches_int = int(inches)
 
+    # Set output labels
+    info_output = tk.Label(window, text="")
+    bmi_output = tk.Label(window, text="")
+
     if inches_int > 12 or inches_int < 0:
-        error_output = tk.Label(window, text="Enter a valid input!")
-        error_output.grid(row=4, column=0)
+        # Hide labels
+        info_output.grid_forget()
+        bmi_output.grid_forget()
+
+        # Place error message
+        bmi_output.config(text="Enter a valid height!")
+        info_output.config(text="")
+        bmi_output.grid(row=5, column=0, columnspan=2, sticky="nsew")
 
     else:
         # Get total inches
@@ -48,15 +58,17 @@ def on_click():
 
         # Set weight and integer
         weight = weight_entry.get()
-        weight_int = int(weight)
+        metric_weight_int = int(weight) * .45
+
+        bmi_result, bmi = calculate_bmi(total_inches, metric_weight_int)
 
         print("Your height: ", height, "'", inches, " and weight: ", weight)  # Show input height and weight
-        print(calculate_bmi(total_inches, weight_int))  # Print the bmi category
+        print(bmi_result)  # Print the bmi category
 
-        info_output = tk.Label(window, text=f"Your height: {height}'{inches} and weight {weight}")
+        info_output.config(text=f"Your height: {height}'{inches} and weight {weight}")
         info_output.grid(row=4, column=0, columnspan=2)
 
-        bmi_output = tk.Label(window, text=f"{calculate_bmi(total_inches, weight_int)}")
+        bmi_output.config(text=f"BMI: {round(bmi,2)}\nBMI Range: {bmi_result}")
         bmi_output.grid(row=5, column=0, columnspan=2, sticky="nsew")
 
 
