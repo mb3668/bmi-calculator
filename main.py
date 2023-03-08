@@ -48,8 +48,9 @@ def on_click():
         bmi_output.grid_forget()
 
         # Place error message
-        bmi_output.config(text="Enter a valid height!")
         info_output.config(text="")
+        info_output.grid(row=4, column=0, columnspan=2, sticky="nsew")
+        bmi_output.config(text="Enter a valid height!")
         bmi_output.grid(row=5, column=0, columnspan=2, sticky="nsew")
 
     else:
