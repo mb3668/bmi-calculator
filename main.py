@@ -39,7 +39,9 @@ def calculate_bmi(height, weight):
     User body mass index
 
     """
-    bmi = round((weight / (height*0.025)**2), 2)
+    metric_weight_int = int(weight) * .45
+    metric_height = (height*0.025)
+    bmi = round((metric_weight_int / metric_height**2), 2)
     print(bmi)
     return bmi
 
@@ -74,10 +76,10 @@ def on_click():
     else:
         # Set weight and integer
         weight = weight_entry.get()
-        metric_weight_int = int(weight) * .45
+        weight_int = int(weight)
 
         # Calculate bmi and categorize
-        bmi = calculate_bmi(total_inches, metric_weight_int)
+        bmi = calculate_bmi(total_inches, weight_int)
         bmi_result = categorize_bmi(bmi)
 
         print("Your height: ", height, "'", inches, " and weight: ", weight)  # Show input height and weight
