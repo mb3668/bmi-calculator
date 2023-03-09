@@ -1,9 +1,34 @@
 import tkinter as tk
 
 
+def categorize_bmi(bmi):
+    """
+    Categorize the user BMI into one of four categories
+
+    :param bmi:
+    users body mass index
+
+    :return:
+    string, BMI category
+
+    """
+    if 18.5 <= bmi < 25:
+        result = "Normal"
+        return result
+    elif 25 <= bmi < 30:
+        result = "Overweight"
+        return result
+    elif bmi >= 30:
+        result = "Obese"
+        return result
+    else:
+        result = "Underweight"
+        return result
+
+
 def calculate_bmi(height, weight):
     """
-    Calculate user bmi
+    Calculate user BMI
 
     :param height:
     height in inches
@@ -11,22 +36,12 @@ def calculate_bmi(height, weight):
     weight in pounds
 
     :return:
-    User bmi category
+    User body mass index
+
     """
-    bmi = (weight / (height*0.025)**2)
+    bmi = round((weight / (height*0.025)**2), 2)
     print(bmi)
-    if 18.5 <= bmi < 25:
-        result = "Normal"
-        return result, bmi
-    elif 25 <= bmi < 30:
-        result = "Overweight"
-        return result, bmi
-    elif bmi >= 30:
-        result = "Obese"
-        return result, bmi
-    else:
-        result = "Underweight"
-        return result, bmi
+    return bmi
 
 
 def on_click():
@@ -42,6 +57,9 @@ def on_click():
     info_output = tk.Label(window, text="")
     bmi_output = tk.Label(window, text="")
 
+    # Get total inches
+    total_inches = (height_int * 12) + inches_int
+
     if inches_int > 12 or inches_int < 0:
         # Hide labels
         info_output.grid_forget()
@@ -50,18 +68,17 @@ def on_click():
         # Place error message
         info_output.config(text="")
         info_output.grid(row=4, column=0, columnspan=2, sticky="nsew")
-        bmi_output.config(text="Enter a valid height!")
+        bmi_output.config(text="Enter a valid input!")
         bmi_output.grid(row=5, column=0, columnspan=2, sticky="nsew")
 
     else:
-        # Get total inches
-        total_inches = (height_int*12)+inches_int
-
         # Set weight and integer
         weight = weight_entry.get()
         metric_weight_int = int(weight) * .45
 
-        bmi_result, bmi = calculate_bmi(total_inches, metric_weight_int)
+        # Calculate bmi and categorize
+        bmi = calculate_bmi(total_inches, metric_weight_int)
+        bmi_result = categorize_bmi(bmi)
 
         print("Your height: ", height, "'", inches, " and weight: ", weight)  # Show input height and weight
         print(bmi_result)  # Print the bmi category
@@ -69,7 +86,7 @@ def on_click():
         info_output.config(text=f"Your height: {height}'{inches} and weight {weight}")
         info_output.grid(row=4, column=0, columnspan=2)
 
-        bmi_output.config(text=f"BMI: {round(bmi,2)}\nBMI Range: {bmi_result}")
+        bmi_output.config(text=f"BMI: {bmi}\nBMI Range: {bmi_result}")
         bmi_output.grid(row=5, column=0, columnspan=2, sticky="nsew")
 
 
