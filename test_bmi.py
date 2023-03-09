@@ -1,29 +1,46 @@
 import pytest
 from main import calculate_bmi
+from main import categorize_bmi
 
 
-def test_normal_bmi():
+def test_normal_lower():
     """
-    Test normal bmi range
-    :return:
-    Nothing
+    Test the inclusive lower bound
     """
-    assert calculate_bmi(18.5) == "Normal"
-    assert calculate_bmi(18.25) == "Underweight"
-    assert calculate_bmi(21.75) == "Normal"
-    assert calculate_bmi(25.25) == "Overweight"
-    assert calculate_bmi(25) == "Overweight"
+    assert categorize_bmi(18.5) == "Normal"
+    assert categorize_bmi(18) == "Underweight"
+    assert categorize_bmi(19) == "Normal"
 
 
-def test_overweight_bmi():
+def test_normal_upper():
     """
-    Test overweight bmi range
-    :return:
-    Nothing
+    Test the exclusive upper bound
     """
-    assert calculate_bmi(25) == "Overweight"
-    assert calculate_bmi(27) == "Overweight"
-    assert calculate_bmi(30) == "Obese"
-    assert calculate_bmi(30.25) == "Obese"
-    assert calculate_bmi(24.75) == "Normal"
+    assert categorize_bmi(25) == "Overweight"
+    assert categorize_bmi(25.5) == "Overweight"
+    assert categorize_bmi(24.5) == "Normal"
 
+
+def test_overweight_lower():
+    """
+    Test the exclusive lower bound
+    """
+    assert categorize_bmi(25) == "Overweight"
+    assert categorize_bmi(24.5) == "Normal"
+    assert categorize_bmi(25.5) == "Overweight"
+
+
+def test_overweight_upper():
+    """
+    Test the inclusive upper bound
+    """
+    assert categorize_bmi(30) == "Obese"
+    assert categorize_bmi(29.5) == "Overweight"
+    assert categorize_bmi(30.5) == "Obese"
+
+
+def test_bmi_calculation():
+    assert calculate_bmi(63, 125) == 22.68
+    assert calculate_bmi(72, 135) == 18.75
+    assert calculate_bmi(72, 180) == 25
+    assert calculate_bmi(67, 157) == 25.18
