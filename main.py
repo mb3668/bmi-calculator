@@ -1,6 +1,16 @@
 import tkinter as tk
 
 
+def int_value(val):
+    """
+    Make sure passed input is integer
+    """
+    if val.isdigit():
+        return True
+    else:
+        return False
+
+
 def categorize_bmi(bmi):
     """
     Categorize the user BMI into one of four categories
@@ -62,7 +72,7 @@ def on_click():
     # Get total inches
     total_inches = (height_int * 12) + inches_int
 
-    if inches_int > 12 or inches_int < 0:
+    if inches_int > 12 or inches_int < 0 or height_int > 9 or height_int < 2:
         # Hide labels
         info_output.grid_forget()
         bmi_output.grid_forget()
@@ -103,7 +113,7 @@ if __name__ == '__main__':
     height_label.grid(row=0, column=0)
 
     # Set height entry
-    height_entry = tk.Entry(window)
+    height_entry = tk.Entry(window, validate="key", validatecommand=(window.register(int_value), '%S'))
     height_entry.grid(row=0, column=1)
 
     # Ask for inches
@@ -111,7 +121,7 @@ if __name__ == '__main__':
     inches_label.grid(row=1, column=0)
 
     # Set inches entry
-    inches_entry = tk.Entry(window)
+    inches_entry = tk.Entry(window, validate="key", validatecommand=(window.register(int_value), '%S'))
     inches_entry.grid(row=1, column=1)
 
     # Ask for weight
@@ -119,7 +129,7 @@ if __name__ == '__main__':
     weight_label.grid(row=2, column=0)
 
     # Set weight
-    weight_entry = tk.Entry(window)
+    weight_entry = tk.Entry(window, validate="key", validatecommand=(window.register(int_value), '%S'))
     weight_entry.grid(row=2, column=1)
 
     # Set button
